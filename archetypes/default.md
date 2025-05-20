@@ -1,5 +1,5 @@
 ---
-title: '{{ replace .Name "-" " " | title }}'
+title: '{{ replace .Name "_" " " | title }}'
 date: {{ .Date }}
 lastmod: {{ .Date }}
 author: ["Bigodf"]
