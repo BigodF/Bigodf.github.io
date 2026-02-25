@@ -22,11 +22,11 @@ _testmain.go
 *.exe
 *.test
 
-/public
+public
 .DS_Store
 .hugo_build.lock
 resources/_gen/
-blog_source
+blog_source/
 # code
 .vscode
 # blog_source/.obsidian
