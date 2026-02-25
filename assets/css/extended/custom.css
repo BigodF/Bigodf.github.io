@@ -3,4 +3,16 @@ pre, code {
     word-wrap: break-word; /* 处理长单词换行 */
     overflow-wrap: break-word;
 }
+
+.img-center {
+  text-align: center;
+}
+
+.img-center img {
+  display: block;
+  margin: 1.5rem auto;
+  height: auto;
+  max-width: 100%;
+  border-radius: 8px;
+}
   

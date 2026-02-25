@@ -1,0 +1,20 @@
+{{- $src := .Destination -}}
+{{- $alt := .Text -}}
+
+{{/* ===== Obsidian width 支持 ===== */}}
+{{- $width := "" -}}
+
+{{ if strings.Contains $alt "|" }}
+  {{ $parts := split $alt "|" }}
+  {{ $alt = index $parts 0 }}
+  {{ $width = index $parts 1 }}
+{{ end }}
+
+<figure class="img-center">
+  <img
+    src="../{{ $src | safeURL }}"
+    alt="{{ $alt }}"
+    {{ with $width }}width="{{ . }}"{{ end }}
+    loading="lazy"
+  />
+</figure>

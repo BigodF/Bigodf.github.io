@@ -26,3 +26,9 @@ _testmain.go
 .DS_Store
 .hugo_build.lock
 resources/_gen/
+blog_source
+# code
+.vscode
+# blog_source/.obsidian
+*.lake
+code/tmp

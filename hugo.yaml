@@ -138,6 +138,8 @@ menu:
 # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
 markup:
+  # math:
+  #   engine = "mathjax"
   highlight:
     noClasses: false
     # anchorLineNos: true
@@ -146,6 +148,8 @@ markup:
     lineNos: true
     # style: monokai
   goldmark:
+    parser:
+      attribute: true
     renderer:
       unsafe: true # HUGO 默认转义 Markdown 文件中的 HTML 代码，如需开启的话
     extensions:
