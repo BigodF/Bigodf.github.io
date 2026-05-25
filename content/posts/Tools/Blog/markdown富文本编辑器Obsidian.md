@@ -1,7 +1,7 @@
 ---
 title: Obsidian
-date: '2025-11-28T16:56:24'
-lastmod: '2025-11-28T17:43:09'
+date: 2025-11-28T16:56:24+0800
+lastmod: 2025-11-28T17:43:09+0800
 author:
 - Bigodf
 tags:

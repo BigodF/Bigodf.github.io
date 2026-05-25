@@ -1,7 +1,7 @@
 ---
 title: 记忆agent之mem0
-date: '2025-12-24T19:33:32'
-lastmod: '2026-02-25T17:28:30'
+date: 2025-12-24T19:33:32+0800
+lastmod: 2026-04-02T14:20:37+0800
 author:
 - Bigodf
 tags:
@@ -56,7 +56,7 @@ mem0是memai的开源记忆工具，包含两种记忆存储方式：
 	- delete：删除已有事实。
 	- noop：不做任何操作。
 
-![mem0](assets/mem0.png)
+![mem0]|739](assets/mem0.png)
 
 ### 基于graph
 

@@ -1,7 +1,7 @@
 ---
 title: 旋转位置编码RoPE
-date: '2026-01-13T20:01:41'
-lastmod: '2026-01-30T14:46:11'
+date: 2026-01-13T20:01:41+0800
+lastmod: 2026-02-25T17:47:16+0800
 author:
 - Bigodf
 tags:
@@ -72,7 +72,7 @@ positional_embeddings = torch.FloatTensor(position_angle_vecs).unsqueeze(0)
 ## RoPE
 RoPE的目标是构造一个位置编码使得下式成立：
 $$
-< f_q(x_m, m), f_k (x_n, n) > = g(x_m, x_n, n-m)  \tag{2.1}
+<f_q(x_m, m), f_k (x_n, n) > = g(x_m, x_n, n-m) \tag {2.1}
 $$
 其中$x_m、x_n$ 分别是位置$m、n$的$token\ embedding$，$<>$是内积运算。该式的目的是构造一个位置编码方式，使得$q、k$的内积运算能够包含相对位置距离$n-m$的信息。
 
@@ -89,7 +89,7 @@ p_m &= R(m) \\
 $$
 那么$attention\ score$，即$<f_q(x_m, m), f_k (x_n, n) >$计算如下：
 $$\begin{align}
-< f_q(x_m, m), f_k (x_n, n) > &= (R(m) W_q x_m)^T (R(n) W_k x_n) \\
+<f_q(x_m, m), f_k (x_n, n) > &= (R(m) W_q x_m)^T (R(n) W_k x_n) \\
                              &= (W_q x_m)^T R(m)^T R(n) W_k x_n \\
                              &= (W_q x_m)^T R(-m) R(n) W_k x_n  \\
                              &= (W_q x_m)^T R(n-m) W_k x_n \\
@@ -193,7 +193,7 @@ $$
 由此可以看出$f$函数是对$q、v$向量的旋转操作。
 $$
 \begin{align}
-< f_q(x_m, m), f_k(x_n, n) > &= \left( 
+<f_q(x_m, m), f_k (x_n, n) > &= \left( 
 					\begin{pmatrix}
 					cos(m\theta) & -sin(m\theta) \\
 					sin(m\theta) & cos(m\theta) \\
@@ -204,8 +204,7 @@ $$
 					p_m^1 \\
 					\end{pmatrix}
 				\right)^T
-				\\
-				& \quad \times 
+				\times 
 				\left(
 					\begin{pmatrix}
 					cos(n\theta) & -sin(n\theta) \\
@@ -222,15 +221,17 @@ $$
 					p_m^1 \\
 					\end{pmatrix}^T
 					\times
-					\begin{pmatrix}
-					cos(m\theta) & sin(m\theta) \\
-					-sin(m\theta) & cos(m\theta) \\
-					\end{pmatrix} \\
-				& \quad \times
-					\begin{pmatrix}
-					cos(n\theta) & -sin(n\theta) \\
-					sin(n\theta) & cos(n\theta) \\
-					\end{pmatrix} 
+					\left(
+						\begin{pmatrix}
+						cos(m\theta) & sin(m\theta) \\
+						-sin(m\theta) & cos(m\theta) \\
+						\end{pmatrix} 
+						\times
+						\begin{pmatrix}
+						cos(n\theta) & -sin(n\theta) \\
+						sin(n\theta) & cos(n\theta) \\
+						\end{pmatrix} 
+					\right)
 					\times 
 					\begin{pmatrix}
 					k_n^0 \\
@@ -260,6 +261,8 @@ $$
 					k_n^1 \\
 					\end{pmatrix} \\
 				&= (p_m^0 k_n^0 + p_m^1 k_n^1) cos((m-n)\theta) + (p_m^0 k_n^1 - p_m^1 k_n^0) sin((m-n)\theta)
+				
+				
 \end{align} \tag {2.2.7}
 $$
 对于$g$函数
@@ -269,12 +272,10 @@ $$
 g(x_m, x_n, m-n) &= Re[(W_q x_m)(W_k x_n)^*e^{i(m-n)\theta}] \\
 			&= Re[(q_m^0 + i \times q_m^1)(k_n^0 - i \times k_n^1)^*e^{i(m-n)\theta}] \\
 			&= Re[((q_m^0 k_n^0 + q_m^1 k_n^1) - i \times(q_m^0 k_n^1 - q_m^1 k_n^0)^*e^{i(m-n)\theta}] \\
-			&= Re[((q_m^0 k_n^0 + q_m^1 k_n^1) \\
-				& \quad - i \times(q_m^0 k_n^1 - q_m^1 k_n^0)^*(cos((m-n)\theta) \\
-				& \quad + i\times sin((m-n)\theta))] \\
-			&= (q_m^0 k_n^0 + q_m^1 k_n^1) \times cos((m-n)\theta) \\
-				& \quad + (q_m^0 k_n^1 - q_m^1 k_n^0) \times sin((m-n)\theta)) \\
-			&= < f_q(x_m, m), f_k (x_n, n) >
+			&= Re[((q_m^0 k_n^0 + q_m^1 k_n^1) - i \times(q_m^0 k_n^1 - q_m^1 k_n^0)^*(cos((m-n)\theta) + i\times sin((m-n)\theta))] \\
+			&= (q_m^0 k_n^0 + q_m^1 k_n^1) \times cos((m-n)\theta) + (q_m^0 k_n^1 - q_m^1 k_n^0) \times sin((m-n)\theta)) \\
+			&= <f_q(x_m, m), f_k (x_n, n) >
+			
 \end{align}  \tag{2.2.8}
 $$
 证毕。
